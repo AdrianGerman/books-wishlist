@@ -1,10 +1,21 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { Book } from "@/types/books"
 import BookForm from "./BookForm"
 import BookList from "./BookList"
 
 export default function BookWishlist() {
   const [books, setBooks] = useState<Book[]>([])
+
+  useEffect(() => {
+    const saved = localStorage.getItem("bookWishlist")
+    if (saved) {
+      setBooks(JSON.parse(saved))
+    }
+  }, [])
+
+  useEffect(() => {
+    localStorage.setItem("bookWishlist", JSON.stringify(books))
+  }, [books])
 
   const addBook = (book: Book) => {
     setBooks([book, ...books])
