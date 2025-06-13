@@ -1,10 +1,10 @@
 "use client"
 
 import { Book } from "@/types/books"
-import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
+import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
-import { Trash2, User } from "lucide-react"
+import { User, Trash2 } from "lucide-react"
 
 interface Props {
   book: Book
@@ -13,39 +13,49 @@ interface Props {
 
 export default function BookCard({ book, onDelete }: Props) {
   return (
-    <Card className="overflow-hidden">
+    <Card className="group hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm border-0 shadow-lg hover:shadow-purple-200 dark:hover:shadow-purple-900/50">
       <CardContent className="p-0">
-        <div className="relative h-48 w-full">
-          <img
-            src={book.imageUrl}
-            alt={book.title}
-            className="w-full h-full object-cover"
-            onError={(e) => {
-              const target = e.target as HTMLImageElement
-              target.src = "/placeholder.svg"
-            }}
-          />
+        <div className="relative">
+          <div className="h-48 w-full">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={book.imageUrl || "/placeholder.svg"}
+              alt={book.title}
+              className="w-full h-full object-cover rounded-t-lg"
+              onError={(e) => {
+                const target = e.target as HTMLImageElement
+                target.src = "/placeholder.svg?height=192&width=300"
+              }}
+            />
+          </div>
           <Button
             variant="ghost"
-            size="icon"
-            className="absolute top-2 right-2 text-red-500"
+            size="sm"
             onClick={() => onDelete(book.id)}
+            className="absolute top-2 right-2 text-red-500 hover:text-red-700 hover:bg-red-50 dark:hover:bg-red-900/20 opacity-0 group-hover:opacity-100 transition-all duration-200 rounded-full bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm"
           >
             <Trash2 className="w-4 h-4" />
           </Button>
         </div>
         <div className="p-4">
-          <h3 className="text-lg font-bold">{book.title}</h3>
-          <p className="text-sm text-gray-500 flex items-center gap-1">
-            <User className="w-4 h-4" /> {book.author}
+          <h3 className="font-bold text-lg text-gray-800 dark:text-gray-100 mb-2 line-clamp-2 group-hover:text-purple-600 dark:group-hover:text-purple-400 transition-colors">
+            {book.title}
+          </h3>
+          <p className="text-gray-600 dark:text-gray-400 text-sm mb-3 flex items-center gap-1">
+            <User className="w-3 h-3" />
+            {book.author}
           </p>
-          <div className="flex justify-between items-center mt-2">
-            <Badge>{book.genre}</Badge>
-            <span className="text-green-600 font-semibold">
+          <div className="flex items-center justify-between mb-3">
+            <Badge className="bg-purple-100 dark:bg-purple-900 text-purple-700 dark:text-purple-300">
+              {book.genre}
+            </Badge>
+            <span className="font-bold text-xl text-green-600 dark:text-green-400">
               ${book.price.toFixed(2)}
             </span>
           </div>
-          <p className="text-xs text-gray-400 mt-2">Agregado: {book.addedAt}</p>
+          <div className="text-xs text-gray-500 dark:text-gray-400">
+            Agregado: {book.addedAt}
+          </div>
         </div>
       </CardContent>
     </Card>
