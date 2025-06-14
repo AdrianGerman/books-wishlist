@@ -32,7 +32,7 @@ export default function BookCard({ book, onDelete }: Props) {
             variant="ghost"
             size="sm"
             onClick={() => onDelete(book.id)}
-            className="absolute top-2 right-2 text-red-500 hover:text-red-700 hover:bg-red-50 dark:hover:bg-red-900/20 opacity-0 group-hover:opacity-100 transition-all duration-200 rounded-full bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm"
+            className="absolute top-2 right-2 text-red-500 hover:text-red-700 hover:bg-red-50 dark:hover:bg-red-900/20 opacity-0 group-hover:opacity-100 transition-all duration-200 rounded-full bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm cursor-pointer"
           >
             <Trash2 className="w-4 h-4" />
           </Button>
