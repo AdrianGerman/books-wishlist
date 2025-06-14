@@ -10,15 +10,28 @@ import ThemeToggle from "./ThemeToggle"
 
 export default function BookWishlist() {
   const [books, setBooks] = useState<Book[]>([])
+  const [isMounted, setIsMounted] = useState(false)
 
   useEffect(() => {
-    const saved = localStorage.getItem("bookWishlist")
-    if (saved) setBooks(JSON.parse(saved))
+    if (typeof window !== "undefined") {
+      const saved = localStorage.getItem("bookWishlist")
+      if (saved) {
+        try {
+          setBooks(JSON.parse(saved))
+        } catch (e) {
+          console.error("Error parsing localStorage:", e)
+          localStorage.removeItem("bookWishlist")
+        }
+      }
+      setIsMounted(true)
+    }
   }, [])
 
   useEffect(() => {
-    localStorage.setItem("bookWishlist", JSON.stringify(books))
-  }, [books])
+    if (isMounted) {
+      localStorage.setItem("bookWishlist", JSON.stringify(books))
+    }
+  }, [books, isMounted])
 
   const addBook = (book: Book) => setBooks([book, ...books])
   const deleteBook = (id: string) => setBooks(books.filter((b) => b.id !== id))
