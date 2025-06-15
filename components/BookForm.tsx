@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { Plus, BookOpen, User, DollarSign, Tag, ImageIcon } from "lucide-react"
 import { Book } from "@/types/books"
 import { Button } from "@/components/ui/button"
@@ -38,10 +38,12 @@ const genres = [
 
 interface Props {
   onAdd: (book: Book) => void
+  initialData?: Book
 }
 
-export default function BookForm({ onAdd }: Props) {
+export default function BookForm({ onAdd, initialData }: Props) {
   const [open, setOpen] = useState(false)
+
   const [form, setForm] = useState({
     title: "",
     author: "",
@@ -49,6 +51,19 @@ export default function BookForm({ onAdd }: Props) {
     genre: "",
     imageUrl: ""
   })
+
+  useEffect(() => {
+    if (initialData) {
+      setForm({
+        title: initialData.title,
+        author: initialData.author,
+        price: initialData.price.toString(),
+        genre: initialData.genre,
+        imageUrl: initialData.imageUrl
+      })
+      setOpen(true)
+    }
+  }, [initialData])
 
   const handleChange = (field: string, value: string) => {
     setForm((prev) => ({ ...prev, [field]: value }))
@@ -61,13 +76,13 @@ export default function BookForm({ onAdd }: Props) {
       return
     }
     const newBook: Book = {
-      id: Date.now().toString(),
+      id: initialData?.id ?? Date.now().toString(),
       title: form.title,
       author: form.author,
       price: parseFloat(form.price),
       genre: form.genre,
       imageUrl: form.imageUrl || "/placeholder.svg",
-      addedAt: new Date().toLocaleDateString()
+      addedAt: initialData?.addedAt ?? new Date().toLocaleDateString()
     }
     onAdd(newBook)
     setForm({ title: "", author: "", price: "", genre: "", imageUrl: "" })
@@ -76,14 +91,18 @@ export default function BookForm({ onAdd }: Props) {
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger asChild>
-        <Button className="flex items-center gap-2">
-          <Plus className="w-4 h-4" /> Agregar Libro
-        </Button>
-      </DialogTrigger>
+      {!initialData && (
+        <DialogTrigger asChild>
+          <Button className="flex items-center gap-2">
+            <Plus className="w-4 h-4" /> Agregar Libro
+          </Button>
+        </DialogTrigger>
+      )}
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Agregar Nuevo Libro</DialogTitle>
+          <DialogTitle>
+            {initialData ? "Editar Libro" : "Agregar Nuevo Libro"}
+          </DialogTitle>
         </DialogHeader>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>

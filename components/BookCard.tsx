@@ -12,15 +12,18 @@ import {
   DialogHeader,
   DialogTitle
 } from "@/components/ui/dialog"
-import { User, Trash2 } from "lucide-react"
+import { User, Trash2, Pencil } from "lucide-react"
+import BookForm from "./BookForm"
 
 interface Props {
   book: Book
   onDelete: (id: string) => void
+  onUpdate: (book: Book) => void
 }
 
-export default function BookCard({ book, onDelete }: Props) {
+export default function BookCard({ book, onDelete, onUpdate }: Props) {
   const [confirmOpen, setConfirmOpen] = useState(false)
+  const [editOpen, setEditOpen] = useState(false)
 
   return (
     <Card className="group hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm border-0 shadow-lg hover:shadow-purple-200 dark:hover:shadow-purple-900/50">
@@ -75,6 +78,36 @@ export default function BookCard({ book, onDelete }: Props) {
                   Eliminar
                 </Button>
               </div>
+            </DialogContent>
+          </Dialog>
+
+          <Dialog open={editOpen} onOpenChange={setEditOpen}>
+            <DialogTrigger asChild>
+              <Button
+                variant="ghost"
+                size="sm"
+                className="absolute top-2 left-2 text-blue-500 hover:text-blue-700 hover:bg-blue-50 dark:hover:bg-blue-900/20 opacity-0 group-hover:opacity-100 transition-all duration-200 rounded-full bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm cursor-pointer"
+              >
+                <Pencil className="w-4 h-4" />
+              </Button>
+            </DialogTrigger>
+            <DialogContent className="sm:max-w-md bg-white dark:bg-gray-800 border-0 shadow-2xl">
+              <DialogHeader>
+                <DialogTitle className="text-xl text-gray-800 dark:text-gray-100 flex items-center gap-2">
+                  Editar Libro
+                </DialogTitle>
+              </DialogHeader>
+              <BookForm
+                initialData={book}
+                onAdd={(updatedBook) => {
+                  onUpdate({
+                    ...updatedBook,
+                    id: book.id,
+                    addedAt: book.addedAt
+                  })
+                  setEditOpen(false)
+                }}
+              />
             </DialogContent>
           </Dialog>
         </div>
