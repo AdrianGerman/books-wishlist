@@ -42,8 +42,6 @@ interface Props {
 }
 
 export default function BookForm({ onAdd, initialData }: Props) {
-  const [open, setOpen] = useState(false)
-
   const [form, setForm] = useState({
     title: "",
     author: "",
@@ -59,15 +57,10 @@ export default function BookForm({ onAdd, initialData }: Props) {
         author: initialData.author,
         price: initialData.price.toString(),
         genre: initialData.genre,
-        imageUrl: initialData.imageUrl
+        imageUrl: initialData.imageUrl || ""
       })
-
-      setTimeout(() => {
-        setOpen(true)
-      }, 0)
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  }, [initialData])
 
   const handleChange = (field: string, value: string) => {
     setForm((prev) => ({ ...prev, [field]: value }))
@@ -79,6 +72,7 @@ export default function BookForm({ onAdd, initialData }: Props) {
       alert("Completa todos los campos obligatorios")
       return
     }
+
     const newBook: Book = {
       id: initialData?.id ?? Date.now().toString(),
       title: form.title,
@@ -88,25 +82,100 @@ export default function BookForm({ onAdd, initialData }: Props) {
       imageUrl: form.imageUrl || "/placeholder.svg",
       addedAt: initialData?.addedAt ?? new Date().toLocaleDateString()
     }
+
     onAdd(newBook)
-    setForm({ title: "", author: "", price: "", genre: "", imageUrl: "" })
-    setOpen(false)
+
+    if (!initialData) {
+      setForm({ title: "", author: "", price: "", genre: "", imageUrl: "" })
+    }
+  }
+
+  if (initialData) {
+    return (
+      <form onSubmit={handleSubmit} className="space-y-4">
+        <div>
+          <Label className="flex items-center gap-1">
+            <BookOpen className="w-4 h-4" />
+            Título *
+          </Label>
+          <Input
+            value={form.title}
+            onChange={(e) => handleChange("title", e.target.value)}
+          />
+        </div>
+        <div>
+          <Label className="flex items-center gap-1">
+            <User className="w-4 h-4" />
+            Autor *
+          </Label>
+          <Input
+            value={form.author}
+            onChange={(e) => handleChange("author", e.target.value)}
+          />
+        </div>
+        <div>
+          <Label className="flex items-center gap-1">
+            <DollarSign className="w-4 h-4" />
+            Precio *
+          </Label>
+          <Input
+            type="number"
+            step="0.01"
+            min="0"
+            value={form.price}
+            onChange={(e) => handleChange("price", e.target.value)}
+          />
+        </div>
+        <div>
+          <Label className="flex items-center gap-1">
+            <Tag className="w-4 h-4" />
+            Género *
+          </Label>
+          <Select
+            key={initialData?.id || "new"}
+            value={form.genre}
+            onValueChange={(v) => handleChange("genre", v)}
+          >
+            <SelectTrigger>
+              <SelectValue placeholder="Selecciona un género" />
+            </SelectTrigger>
+            <SelectContent>
+              {genres.map((g) => (
+                <SelectItem key={g} value={g}>
+                  {g}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
+        <div>
+          <Label className="flex items-center gap-1">
+            <ImageIcon className="w-4 h-4" />
+            URL de Imagen
+          </Label>
+          <Input
+            value={form.imageUrl}
+            onChange={(e) => handleChange("imageUrl", e.target.value)}
+            placeholder="https://ejemplo.com/imagen.jpg"
+          />
+        </div>
+        <Button type="submit" className="w-full mt-2">
+          Guardar
+        </Button>
+      </form>
+    )
   }
 
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
-      {!initialData && (
-        <DialogTrigger asChild>
-          <Button className="flex items-center gap-2">
-            <Plus className="w-4 h-4" /> Agregar Libro
-          </Button>
-        </DialogTrigger>
-      )}
+    <Dialog>
+      <DialogTrigger asChild>
+        <Button className="flex items-center gap-2">
+          <Plus className="w-4 h-4" /> Agregar Libro
+        </Button>
+      </DialogTrigger>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>
-            {initialData ? "Editar Libro" : "Agregar Nuevo Libro"}
-          </DialogTitle>
+          <DialogTitle>Agregar Nuevo Libro</DialogTitle>
         </DialogHeader>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
@@ -136,6 +205,8 @@ export default function BookForm({ onAdd, initialData }: Props) {
             </Label>
             <Input
               type="number"
+              step="0.01"
+              min="0"
               value={form.price}
               onChange={(e) => handleChange("price", e.target.value)}
             />
@@ -146,6 +217,7 @@ export default function BookForm({ onAdd, initialData }: Props) {
               Género *
             </Label>
             <Select
+              key="add-genre"
               value={form.genre}
               onValueChange={(v) => handleChange("genre", v)}
             >
@@ -169,6 +241,7 @@ export default function BookForm({ onAdd, initialData }: Props) {
             <Input
               value={form.imageUrl}
               onChange={(e) => handleChange("imageUrl", e.target.value)}
+              placeholder="https://ejemplo.com/imagen.jpg"
             />
           </div>
           <Button type="submit" className="w-full mt-2">
