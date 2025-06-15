@@ -61,9 +61,13 @@ export default function BookForm({ onAdd, initialData }: Props) {
         genre: initialData.genre,
         imageUrl: initialData.imageUrl
       })
-      setOpen(true)
+
+      setTimeout(() => {
+        setOpen(true)
+      }, 0)
     }
-  }, [initialData])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   const handleChange = (field: string, value: string) => {
     setForm((prev) => ({ ...prev, [field]: value }))
