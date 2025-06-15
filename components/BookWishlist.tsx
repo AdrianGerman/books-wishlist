@@ -35,6 +35,9 @@ export default function BookWishlist() {
 
   const addBook = (book: Book) => setBooks([book, ...books])
   const deleteBook = (id: string) => setBooks(books.filter((b) => b.id !== id))
+  const updateBook = (updated: Book) => {
+    setBooks((prev) => prev.map((b) => (b.id === updated.id ? updated : b)))
+  }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-50 via-pink-50 to-indigo-50 dark:from-gray-900 dark:via-purple-900 dark:to-indigo-900 transition-colors duration-300">
@@ -81,7 +84,7 @@ export default function BookWishlist() {
             Aún no hay libros añadidos.
           </p>
         ) : (
-          <BookList books={books} onDelete={deleteBook} />
+          <BookList books={books} onDelete={deleteBook} onUpdate={updateBook} />
         )}
       </div>
     </div>
