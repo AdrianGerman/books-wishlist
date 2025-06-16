@@ -131,22 +131,25 @@ export default function BookForm({ onAdd, initialData }: Props) {
             <Tag className="w-4 h-4" />
             Género *
           </Label>
-          <Select
-            key={initialData?.id || "new"}
-            value={form.genre}
-            onValueChange={(v) => handleChange("genre", v)}
-          >
-            <SelectTrigger>
-              <SelectValue placeholder="Selecciona un género" />
-            </SelectTrigger>
-            <SelectContent>
-              {genres.map((g) => (
-                <SelectItem key={g} value={g}>
-                  {g}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
+          {form.genre && (
+            <Select
+              value={form.genre}
+              onValueChange={(v) => handleChange("genre", v)}
+            >
+              <SelectTrigger>
+                <SelectValue placeholder="Selecciona un género">
+                  {form.genre}
+                </SelectValue>
+              </SelectTrigger>
+              <SelectContent>
+                {genres.map((g) => (
+                  <SelectItem key={g} value={g}>
+                    {g}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          )}
         </div>
         <div>
           <Label className="flex items-center gap-1">
