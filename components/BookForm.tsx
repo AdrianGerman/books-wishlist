@@ -90,167 +90,111 @@ export default function BookForm({ onAdd, initialData }: Props) {
     }
   }
 
+  const FormFields = (
+    <form onSubmit={handleSubmit} className="space-y-4 mt-2">
+      <div>
+        <Label className="flex items-center gap-1">
+          <BookOpen className="w-4 h-4" />
+          Título *
+        </Label>
+        <Input
+          value={form.title}
+          onChange={(e) => handleChange("title", e.target.value)}
+          className="dark:bg-gray-700 dark:border-gray-600 dark:text-gray-100"
+        />
+      </div>
+
+      <div>
+        <Label className="flex items-center gap-1">
+          <User className="w-4 h-4" />
+          Autor *
+        </Label>
+        <Input
+          value={form.author}
+          onChange={(e) => handleChange("author", e.target.value)}
+          className="dark:bg-gray-700 dark:border-gray-600 dark:text-gray-100"
+        />
+      </div>
+
+      <div>
+        <Label className="flex items-center gap-1">
+          <DollarSign className="w-4 h-4" />
+          Precio *
+        </Label>
+        <Input
+          type="number"
+          step="0.01"
+          min="0"
+          value={form.price}
+          onChange={(e) => handleChange("price", e.target.value)}
+          className="dark:bg-gray-700 dark:border-gray-600 dark:text-gray-100"
+        />
+      </div>
+
+      <div>
+        <Label className="flex items-center gap-1">
+          <Tag className="w-4 h-4" />
+          Género *
+        </Label>
+        <Select
+          value={form.genre}
+          onValueChange={(v) => handleChange("genre", v)}
+        >
+          <SelectTrigger className="dark:bg-gray-700 dark:border-gray-600 dark:text-gray-100">
+            <SelectValue placeholder="Selecciona un género" />
+          </SelectTrigger>
+          <SelectContent className="dark:bg-gray-700 dark:border-gray-600">
+            {genres.map((g) => (
+              <SelectItem
+                key={g}
+                value={g}
+                className="dark:text-gray-100 dark:hover:bg-gray-600"
+              >
+                {g}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+      </div>
+
+      <div>
+        <Label className="flex items-center gap-1">
+          <ImageIcon className="w-4 h-4" />
+          URL de Imagen
+        </Label>
+        <Input
+          value={form.imageUrl}
+          onChange={(e) => handleChange("imageUrl", e.target.value)}
+          placeholder="https://ejemplo.com/imagen.jpg"
+          className="dark:bg-gray-700 dark:border-gray-600 dark:text-gray-100"
+        />
+      </div>
+
+      <Button type="submit" className="w-full mt-2 cursor-pointer">
+        Guardar
+      </Button>
+    </form>
+  )
+
   if (initialData) {
-    return (
-      <form onSubmit={handleSubmit} className="space-y-4">
-        <div>
-          <Label className="flex items-center gap-1">
-            <BookOpen className="w-4 h-4" />
-            Título *
-          </Label>
-          <Input
-            value={form.title}
-            onChange={(e) => handleChange("title", e.target.value)}
-          />
-        </div>
-        <div>
-          <Label className="flex items-center gap-1">
-            <User className="w-4 h-4" />
-            Autor *
-          </Label>
-          <Input
-            value={form.author}
-            onChange={(e) => handleChange("author", e.target.value)}
-          />
-        </div>
-        <div>
-          <Label className="flex items-center gap-1">
-            <DollarSign className="w-4 h-4" />
-            Precio *
-          </Label>
-          <Input
-            type="number"
-            step="0.01"
-            min="0"
-            value={form.price}
-            onChange={(e) => handleChange("price", e.target.value)}
-          />
-        </div>
-        <div>
-          <Label className="flex items-center gap-1">
-            <Tag className="w-4 h-4" />
-            Género *
-          </Label>
-          {form.genre && (
-            <Select
-              value={form.genre}
-              onValueChange={(v) => handleChange("genre", v)}
-            >
-              <SelectTrigger>
-                <SelectValue placeholder="Selecciona un género">
-                  {form.genre}
-                </SelectValue>
-              </SelectTrigger>
-              <SelectContent>
-                {genres.map((g) => (
-                  <SelectItem key={g} value={g}>
-                    {g}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          )}
-        </div>
-        <div>
-          <Label className="flex items-center gap-1">
-            <ImageIcon className="w-4 h-4" />
-            URL de Imagen
-          </Label>
-          <Input
-            value={form.imageUrl}
-            onChange={(e) => handleChange("imageUrl", e.target.value)}
-            placeholder="https://ejemplo.com/imagen.jpg"
-          />
-        </div>
-        <Button type="submit" className="w-full mt-2 cursor-pointer">
-          Guardar
-        </Button>
-      </form>
-    )
+    return <div className="px-1 pt-2 pb-1">{FormFields}</div>
   }
 
   return (
     <Dialog>
       <DialogTrigger asChild>
         <Button className="flex items-center gap-2">
-          <Plus className="w-4 h-4" /> Agregar Libro
+          <Plus className="w-4 h-4" />
+          Agregar Libro
         </Button>
       </DialogTrigger>
-      <DialogContent>
+      <DialogContent className="sm:max-w-md bg-white dark:bg-gray-800 border-0 shadow-2xl">
         <DialogHeader>
-          <DialogTitle>Agregar Nuevo Libro</DialogTitle>
+          <DialogTitle className="text-xl text-gray-800 dark:text-gray-100 flex items-center gap-2">
+            Agregar Nuevo Libro
+          </DialogTitle>
         </DialogHeader>
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <div>
-            <Label className="flex items-center gap-1">
-              <BookOpen className="w-4 h-4" />
-              Título *
-            </Label>
-            <Input
-              value={form.title}
-              onChange={(e) => handleChange("title", e.target.value)}
-            />
-          </div>
-          <div>
-            <Label className="flex items-center gap-1">
-              <User className="w-4 h-4" />
-              Autor *
-            </Label>
-            <Input
-              value={form.author}
-              onChange={(e) => handleChange("author", e.target.value)}
-            />
-          </div>
-          <div>
-            <Label className="flex items-center gap-1">
-              <DollarSign className="w-4 h-4" />
-              Precio *
-            </Label>
-            <Input
-              type="number"
-              step="0.01"
-              min="0"
-              value={form.price}
-              onChange={(e) => handleChange("price", e.target.value)}
-            />
-          </div>
-          <div>
-            <Label className="flex items-center gap-1">
-              <Tag className="w-4 h-4" />
-              Género *
-            </Label>
-            <Select
-              key="add-genre"
-              value={form.genre}
-              onValueChange={(v) => handleChange("genre", v)}
-            >
-              <SelectTrigger>
-                <SelectValue placeholder="Selecciona un género" />
-              </SelectTrigger>
-              <SelectContent>
-                {genres.map((g) => (
-                  <SelectItem key={g} value={g}>
-                    {g}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </div>
-          <div>
-            <Label className="flex items-center gap-1">
-              <ImageIcon className="w-4 h-4" />
-              URL de Imagen
-            </Label>
-            <Input
-              value={form.imageUrl}
-              onChange={(e) => handleChange("imageUrl", e.target.value)}
-              placeholder="https://ejemplo.com/imagen.jpg"
-            />
-          </div>
-          <Button type="submit" className="w-full mt-2">
-            Guardar
-          </Button>
-        </form>
+        {FormFields}
       </DialogContent>
     </Dialog>
   )
