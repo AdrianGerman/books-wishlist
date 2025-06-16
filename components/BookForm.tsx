@@ -93,7 +93,7 @@ export default function BookForm({ onAdd, initialData }: Props) {
   const FormFields = (
     <form onSubmit={handleSubmit} className="space-y-4 mt-2">
       <div>
-        <Label className="flex items-center gap-1">
+        <Label className="flex items-center gap-1 mb-1">
           <BookOpen className="w-4 h-4" />
           Título *
         </Label>
@@ -105,7 +105,7 @@ export default function BookForm({ onAdd, initialData }: Props) {
       </div>
 
       <div>
-        <Label className="flex items-center gap-1">
+        <Label className="flex items-center gap-1 mb-1">
           <User className="w-4 h-4" />
           Autor *
         </Label>
@@ -117,7 +117,7 @@ export default function BookForm({ onAdd, initialData }: Props) {
       </div>
 
       <div>
-        <Label className="flex items-center gap-1">
+        <Label className="flex items-center gap-1 mb-1">
           <DollarSign className="w-4 h-4" />
           Precio *
         </Label>
@@ -132,7 +132,7 @@ export default function BookForm({ onAdd, initialData }: Props) {
       </div>
 
       <div>
-        <Label className="flex items-center gap-1">
+        <Label className="flex items-center gap-1 mb-1">
           <Tag className="w-4 h-4" />
           Género *
         </Label>
@@ -158,7 +158,7 @@ export default function BookForm({ onAdd, initialData }: Props) {
       </div>
 
       <div>
-        <Label className="flex items-center gap-1">
+        <Label className="flex items-center gap-1 mb-1">
           <ImageIcon className="w-4 h-4" />
           URL de Imagen
         </Label>
