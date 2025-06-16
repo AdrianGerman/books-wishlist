@@ -162,7 +162,7 @@ export default function BookForm({ onAdd, initialData }: Props) {
             placeholder="https://ejemplo.com/imagen.jpg"
           />
         </div>
-        <Button type="submit" className="w-full mt-2">
+        <Button type="submit" className="w-full mt-2 cursor-pointer">
           Guardar
         </Button>
       </form>
